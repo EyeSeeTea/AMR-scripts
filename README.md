@@ -19,11 +19,27 @@ shell:~$ yarn build
 The entry point CLI is executed with `yarn start`. Pass `--help` to show commands and arguments to commands:
 
 ```console
-shell:~$ yarn start
-# ...
-shell:~$ yarn start users --help
+shell:~$ yarn patients updateUniqueIds --url "https://dhis2.instance/dhis2/" --auth 'user:password'
 ```
 
+To execute a test run use the `--dry-run` option:
+```console
+shell:~$ yarn patients updateUniqueIds --url "https://dhis2.instance/dhis2/" --auth 'user:password' --dry-run
+```
+
+Its recommended to save the execution log via tools like `tee`:
+```console
+shell:~$ yarn patients updateUniqueIds --url "https://dhis2.instance/dhis2/" --auth 'user:password' --dry-run 2>&1 | tee run.log
+```
+
+### Run options
+  - `--url <str>`    - http[s]://HOST:PORT
+  - `--auth <value>` - USERNAME:PASSWORD
+  - `--dry-run, -d` - If set, the data will not be actually posted to the API
+  - `--help, -h`    - show help
+
+
+### logs
 The default log level is `info`. Set the desired level using env variable `LOG_LEVEL`:
 
 ```console

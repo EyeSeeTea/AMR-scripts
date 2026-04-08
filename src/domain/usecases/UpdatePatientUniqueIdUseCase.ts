@@ -96,35 +96,33 @@ export class UpdatePatientUniqueIdUseCase {
 
                 const matchingUniquePatientValue =
                     matchingUniquePatient?.uniquePatientIdValue ?? "";
+                const valueUpToDate = matchingUniquePatientValue === patient.uniquePatientIdValue;
+                const value = valueUpToDate ? "" : matchingUniquePatientValue;
 
                 if (!matchingUniquePatient) {
                     this.logger.warn(
                         `No matching unique patient found for TEI ID: ${patient.teiId} with PatID value: ${patient.patientIdValue}`
                     );
-                    return undefined;
                 } else {
-                    if (matchingUniquePatientValue === patient.uniquePatientIdValue) {
+                    if (valueUpToDate) {
                         this.logger.info(
                             `Unique patient ID: ${matchingUniquePatientValue} for TEI ID: ${patient.teiId} is already up to date. Skipping update.`
                         );
-                        return undefined;
+                    } else {
+                        this.logger.info(
+                            `Found matching unique patient for TEI ID: ${patient.teiId} with unique PatID value: ${matchingUniquePatientValue}`
+                        );
                     }
-                    this.logger.info(
-                        `Found matching unique patient for TEI ID: ${patient.teiId} with unique PatID value: ${matchingUniquePatientValue}`
-                    );
                 }
 
                 return {
                     teiId: patient.teiId,
                     trackedEntityType: patient.trackedEntityType,
                     orgUnit: patient.orgUnit,
-                    value: matchingUniquePatientValue,
+                    value: value,
                 };
             })
-            .filter(
-                (update): update is UniquePatientIdUpdate =>
-                    update !== undefined && update.value !== ""
-            );
+            .filter(update => update.value !== "");
     }
 
     private getValidForms(forms: Form[]) {

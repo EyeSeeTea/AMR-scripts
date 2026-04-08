@@ -1,6 +1,6 @@
 ## Setup
 
-The required node version is v16.14.0. Alternatively, you can run:
+The required node version is v22.22.0. Alternatively, you can run:
 
 ```console
 shell:~$ nvm use

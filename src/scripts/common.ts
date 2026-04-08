@@ -56,7 +56,8 @@ export function getApiUrlOptions() {
 
 export const AuthString: Type<string, Auth> = {
     async from(str) {
-        const [username, password] = str.split(":");
+        const [username, ...passwordParts] = str.split(":");
+        const password = passwordParts.join(":");
         if (!username || !password)
             throw new Error(`Invalid pair: ${str} (expected USERNAME:PASSWORD)`);
         return { username, password };
